@@ -3,12 +3,17 @@ include "F:/xampp\htdocs\hospital\core/config.php";
 session_start();
 
 if (isset($_POST['send'])) {
+    //-----------------FullName-----------
     $FullName = $_POST['FullName'];
+    //--------------email----------
     $Email = $_POST['Email'];
+    //--------------------select-----------
     $select_doctor = "SELECT * FROM doctors WHERE Email ='$Email'";
     $query_doctor = mysqli_query($connect, $select_doctor);
     $data_doctor = mysqli_fetch_assoc($query_doctor);
+    //---------------check email--------------
     if ($data_doctor) {
+        //-------------session------------
         $_SESSION['doctor'] = [
             'DoctorID' => $data_doctor['DoctorID'],
             'FullName' => $data_doctor['FullName'],
@@ -19,7 +24,7 @@ if (isset($_POST['send'])) {
             'consultationFee' => $data_doctor['consultationFee'],
             'Email' => $data_doctor['Email']
         ];
-        // -----------Name---------------
+        // -----------check FullName---------------
         $check_FullName = $data_doctor['FullName'];
         if ($FullName == $check_FullName) {
             header('location: http://localhost/hospital/app/doctor/doctor.php');

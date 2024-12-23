@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 18, 2024 at 08:10 PM
+-- Generation Time: Dec 23, 2024 at 09:06 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -61,8 +61,7 @@ CREATE TABLE `appointments` (
 --
 
 INSERT INTO `appointments` (`AppointmentID`, `PatientID`, `InvoiceID`, `DoctorID`, `AppointmentDate`, `Status`) VALUES
-(18, 6, 21, 3, '2024-12-18 14:04:46', 'Cancelled'),
-(19, 6, 22, 2, '2024-12-18 19:03:01', 'Confirmed');
+(26, 9, 29, 7, '2024-12-26 06:44:50', 'Pending');
 
 -- --------------------------------------------------------
 
@@ -73,18 +72,17 @@ INSERT INTO `appointments` (`AppointmentID`, `PatientID`, `InvoiceID`, `DoctorID
 CREATE TABLE `attendance` (
   `AttendanceID` int(11) NOT NULL,
   `StaffID` int(11) DEFAULT NULL,
-  `AttendanceDate` date NOT NULL,
-  `Status` enum('Present','Absent','Late') DEFAULT 'Present',
-  `Remarks` text DEFAULT NULL
+  `AttendanceDate` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `attendance`
 --
 
-INSERT INTO `attendance` (`AttendanceID`, `StaffID`, `AttendanceDate`, `Status`, `Remarks`) VALUES
-(5, 9, '2024-12-15', 'Present', 'On time'),
-(10, 9, '2024-12-15', 'Late', 'Arrived 15 minutes late');
+INSERT INTO `attendance` (`AttendanceID`, `StaffID`, `AttendanceDate`) VALUES
+(46, 14, '2024-12-22 03:13:47'),
+(50, 9, '2024-12-23 05:52:07'),
+(52, 20, '2024-12-23 06:33:32');
 
 -- --------------------------------------------------------
 
@@ -104,7 +102,7 @@ CREATE TABLE `departments` (
 
 INSERT INTO `departments` (`DepartmentID`, `DepartmentName`, `Description`) VALUES
 (1, 'Nursing', 'any thing'),
-(2, 'dustman', 'any thing');
+(2, 'not_doctor', 'any thing');
 
 -- --------------------------------------------------------
 
@@ -130,7 +128,8 @@ CREATE TABLE `doctors` (
 INSERT INTO `doctors` (`DoctorID`, `FullName`, `Specialization`, `PhoneNumber`, `Email`, `WorkingHours`, `Salary`, `consultationFee`) VALUES
 (2, 'Anthony Hester', 'Placeat provident ', '+1 (887) 331-81', 'pycojodo@mailinator.com', 'Similique ipsum qui ', 100000.00, ''),
 (3, 'Eliana Willis', 'Blanditiis in qui ma', '+1 (901) 495-36', 'xixe@mailinator.com', 'Consectetur necessit', 0.00, ''),
-(4, 'doctor', 'Exercitationem non p', '+1 (222) 138-43', 'doctor@mailinator.com', '12', 2000000.00, '');
+(6, 'doctor', 'hart', '01153107109', 'doctor@gmail.com', '12', 1000000.00, '200'),
+(7, 'SAYED', 'Neurology', '01029106085', 'sayed27@gmail.com', '3', 60000.00, '1000');
 
 -- --------------------------------------------------------
 
@@ -174,8 +173,7 @@ CREATE TABLE `invoices` (
 --
 
 INSERT INTO `invoices` (`InvoiceID`, `PatientID`, `InvoiceDate`, `TotalAmount`, `Status`) VALUES
-(21, 6, '2024-12-17 10:55:31', 0.00, 'Unpaid'),
-(22, 6, '2024-12-17 10:55:41', 0.00, 'Unpaid');
+(29, 9, '2024-12-23 06:44:50', 1000.00, 'Unpaid');
 
 -- --------------------------------------------------------
 
@@ -192,6 +190,13 @@ CREATE TABLE `medicalrecords` (
   `DischargeDate` text DEFAULT NULL,
   `Notes` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `medicalrecords`
+--
+
+INSERT INTO `medicalrecords` (`RecordID`, `PatientID`, `Diagnosis`, `Treatment`, `AdmissionDate`, `DischargeDate`, `Notes`) VALUES
+(9, 8, 'Ut quisquam amet co', 'Officia quo hic eius', '1989-11-16', '2012-11-07', 'Enim nisi dolores na');
 
 -- --------------------------------------------------------
 
@@ -215,9 +220,10 @@ CREATE TABLE `patients` (
 --
 
 INSERT INTO `patients` (`PatientID`, `FullName`, `DateOfBirth`, `Gender`, `Address`, `PhoneNumber`, `Email`, `MedicalHistory`) VALUES
-(4, 'Martena Lowery', '1982-07-18', 'Male', 'Sapiente est in id ', '+1 (356) 686-84', 'hacusidicu@mailinator.com', 'Dolorum iure volupta'),
 (5, 'Hadley Dillon', '1976-05-27', 'Female', 'Ipsam est aut liber', '+1 (889) 774-46', 'syqevalyvo@mailinator.com', 'Laboriosam eu elige'),
-(6, 'patient', '2018-04-10', 'Female', 'Voluptate quia aliqu', '+1 (458) 557-89', 'patient@mailinator.com', 'Nulla magnam ea eum ');
+(7, 'Ahmed Nasser', '2025-01-11', 'Male', 'cairo', '01153107109', 'Ahmed@gmail.com', 'not'),
+(8, 'patient', '2019-09-07', 'Female', 'Ab adipisicing amet', '+1 (798) 254-23', 'patient@mailinator.com', 'Et perferendis obcae'),
+(9, 'BASHAR', '2000-02-22', 'Male', 'asyut', '01104628343', 'bashar@gmail.com', 'sdfghlkm,n');
 
 -- --------------------------------------------------------
 
@@ -240,7 +246,11 @@ CREATE TABLE `staff` (
 
 INSERT INTO `staff` (`StaffID`, `FullName`, `JobTitle`, `Salary`, `PhoneNumber`, `DepartmentID`) VALUES
 (9, 'Ali Hassan', 'Nurse', 5000.00, '01112345678', 1),
-(11, 'abo habeba', 'dustman', 2.50, '022222223', 2);
+(12, 'mostaf alasy', 'leader', 900000.00, '011111111', 2),
+(13, 'kjh', 'uhhk', 8907.00, '0809878', 2),
+(14, 'kjh', 'uhhk', 8907.00, '0809878', 2),
+(15, 'aaaaaaafhgj', 'gjh', 7889.00, '011', 2),
+(20, 'Ahmed Nasser', 'uhhk', 1000000.00, '01153107109', 2);
 
 -- --------------------------------------------------------
 
@@ -332,13 +342,13 @@ ALTER TABLE `admin`
 -- AUTO_INCREMENT for table `appointments`
 --
 ALTER TABLE `appointments`
-  MODIFY `AppointmentID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `AppointmentID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT for table `attendance`
 --
 ALTER TABLE `attendance`
-  MODIFY `AttendanceID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `AttendanceID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
 
 --
 -- AUTO_INCREMENT for table `departments`
@@ -350,31 +360,31 @@ ALTER TABLE `departments`
 -- AUTO_INCREMENT for table `doctors`
 --
 ALTER TABLE `doctors`
-  MODIFY `DoctorID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `DoctorID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `invoices`
 --
 ALTER TABLE `invoices`
-  MODIFY `InvoiceID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `InvoiceID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT for table `medicalrecords`
 --
 ALTER TABLE `medicalrecords`
-  MODIFY `RecordID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `RecordID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `patients`
 --
 ALTER TABLE `patients`
-  MODIFY `PatientID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `PatientID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `staff`
 --
 ALTER TABLE `staff`
-  MODIFY `StaffID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `StaffID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- Constraints for dumped tables

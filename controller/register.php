@@ -20,10 +20,10 @@ if (isset($_POST['send'])) {
     // -------------PASSWORD------------
     $password = $_POST['password'];
     $password_hash = password_hash($password, PASSWORD_DEFAULT);
-    // -------------QUERY---------------
+    // -------------inset into admin in database---------------
     $insert = "INSERT INTO admin VALUE (NULL,'$name','$email','$password_hash')";
     $query = mysqli_query($connect, $insert);
-    header('location: http://localhost/hospital/pages/login.php');
+    header('location: http://localhost/hospital/pages/admin_log.php');
     die;
 } else {
     // ------------UNSEND--------------
